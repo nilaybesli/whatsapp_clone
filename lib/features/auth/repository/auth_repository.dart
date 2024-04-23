@@ -1,12 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_clone/common/utils/utils.dart';
 import 'package:whatsapp_clone/features/auth/screens/otp_screen.dart';
 
+import '../screens/user_information_screen.dart';
+
 final authRepositoryProvider = Provider(
-      (ref) => AuthRepository(
+  (ref) => AuthRepository(
     auth: FirebaseAuth.instance,
     firestore: FirebaseFirestore.instance,
   ),
@@ -29,8 +32,12 @@ class AuthRepository {
           await auth.signInWithCredential(credential);
         },
         verificationFailed: (FirebaseAuthException e) {
-
-           throw Exception(e.message);
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (ctx) => const OTPScreen(verificationId: '1327'),
+            ),
+          );
+          throw Exception(e.message);
         },
         codeSent: (String verificationId, int? resendToken) async {
           // Navigate to OTP screen
@@ -45,11 +52,26 @@ class AuthRepository {
         },
       );
     } on FirebaseAuthException catch (e) {
-      // Handle FirebaseAuthException
       showSnackBar(context: context, content: e.message!);
     } catch (e) {
-      // Handle other exceptions
       showSnackBar(context: context, content: 'An unexpected error occurred.');
+    }
+  }
+
+  void verifyOTP({
+    required BuildContext context,
+    required String verificationId,
+    required String userOTP,
+  }) async {
+    try {
+      PhoneAuthCredential credential = PhoneAuthProvider.credential(
+        verificationId: verificationId,
+        smsCode: userOTP,
+      );
+      await auth.signInWithCredential(credential);
+    Navigator.pushNamedAndRemoveUntil(context, UserInformationScreen.routeName, (route) => false);
+    } on FirebaseAuthException catch (e) {
+      showSnackBar(context: context, content: e.message!);
     }
   }
 }
