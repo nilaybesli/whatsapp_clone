@@ -6,8 +6,10 @@ import 'package:whatsapp_clone/common/utils/utils.dart';
 import 'package:whatsapp_clone/features/auth/screens/otp_screen.dart';
 
 final authRepositoryProvider = Provider(
-  (ref) => AuthRepository(
-      auth: FirebaseAuth.instance, firestore: FirebaseFirestore.instance),
+      (ref) => AuthRepository(
+    auth: FirebaseAuth.instance,
+    firestore: FirebaseFirestore.instance,
+  ),
 );
 
 class AuthRepository {
@@ -19,26 +21,35 @@ class AuthRepository {
     required this.firestore,
   });
 
-  void signInWithPhone(BuildContext context, String phoneNumber) async {
+  Future<void> signInWithPhone(BuildContext context, String phoneNumber) async {
     try {
       await auth.verifyPhoneNumber(
+        phoneNumber: phoneNumber,
         verificationCompleted: (PhoneAuthCredential credential) async {
           await auth.signInWithCredential(credential);
         },
-        verificationFailed: (e) {
-          throw Exception(e.message);
+        verificationFailed: (FirebaseAuthException e) {
+
+           throw Exception(e.message);
         },
-        codeSent: ((String verificationId, int? resendToken) async {
+        codeSent: (String verificationId, int? resendToken) async {
+          // Navigate to OTP screen
           Navigator.pushNamed(
             context,
             OTPScreen.routeName,
             arguments: verificationId,
           );
-        }),
-        codeAutoRetrievalTimeout: (String verificationId) {},
+        },
+        codeAutoRetrievalTimeout: (String verificationId) {
+          // Handle auto retrieval timeout if needed
+        },
       );
     } on FirebaseAuthException catch (e) {
+      // Handle FirebaseAuthException
       showSnackBar(context: context, content: e.message!);
+    } catch (e) {
+      // Handle other exceptions
+      showSnackBar(context: context, content: 'An unexpected error occurred.');
     }
   }
 }
