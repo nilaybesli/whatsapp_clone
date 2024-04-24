@@ -21,9 +21,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
 
     case UserInformationScreen.routeName:
       return MaterialPageRoute(
-      builder: (ctx) => UserInformationScreen(
-       ),
-    );
+        builder: (ctx) => const UserInformationScreen(),
+      );
     default:
       return MaterialPageRoute(
           builder: (context) => const Scaffold(

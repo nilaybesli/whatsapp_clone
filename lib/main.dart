@@ -7,11 +7,12 @@ import 'package:whatsapp_clone/router.dart';
 import 'colors.dart';
 import 'features/landing/screens/landing_screen.dart';
 
+// +1 650-555-3434
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-   );
+  );
 
   runApp(
     const ProviderScope(

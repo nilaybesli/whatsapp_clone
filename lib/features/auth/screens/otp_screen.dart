@@ -7,6 +7,7 @@ import '../../../colors.dart';
 class OTPScreen extends ConsumerWidget {
   static const String routeName = '/otp-screen';
   final String verificationId;
+
   const OTPScreen({
     Key? key,
     required this.verificationId,
@@ -14,16 +15,15 @@ class OTPScreen extends ConsumerWidget {
 
   void verifyOTP(WidgetRef ref, BuildContext context, String userOTP) {
     ref.read(authControllerProvider).verifyOTP(
-      context,
-      verificationId,
-      userOTP,
-    );
+          context,
+          verificationId,
+          userOTP,
+        );
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final size = MediaQuery.of(context).size;
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Verifying your number'),

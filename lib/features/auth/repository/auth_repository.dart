@@ -32,24 +32,16 @@ class AuthRepository {
           await auth.signInWithCredential(credential);
         },
         verificationFailed: (FirebaseAuthException e) {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (ctx) => const OTPScreen(verificationId: '1327'),
-            ),
-          );
           throw Exception(e.message);
         },
         codeSent: (String verificationId, int? resendToken) async {
-          // Navigate to OTP screen
           Navigator.pushNamed(
             context,
             OTPScreen.routeName,
             arguments: verificationId,
           );
         },
-        codeAutoRetrievalTimeout: (String verificationId) {
-          // Handle auto retrieval timeout if needed
-        },
+        codeAutoRetrievalTimeout: (String verificationId) {},
       );
     } on FirebaseAuthException catch (e) {
       showSnackBar(context: context, content: e.message!);
@@ -69,7 +61,8 @@ class AuthRepository {
         smsCode: userOTP,
       );
       await auth.signInWithCredential(credential);
-    Navigator.pushNamedAndRemoveUntil(context, UserInformationScreen.routeName, (route) => false);
+      Navigator.pushNamedAndRemoveUntil(
+          context, UserInformationScreen.routeName, (route) => false);
     } on FirebaseAuthException catch (e) {
       showSnackBar(context: context, content: e.message!);
     }
