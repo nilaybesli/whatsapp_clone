@@ -10,6 +10,7 @@ import 'package:whatsapp_clone/common/repositories/common_firebase_Storage_repos
 import 'package:whatsapp_clone/common/utils/utils.dart';
 import 'package:whatsapp_clone/features/auth/screens/otp_screen.dart';
 import 'package:whatsapp_clone/models/user_model.dart';
+import 'package:whatsapp_clone/screens/mobile_layout_screen.dart';
 
 import '../screens/user_information_screen.dart';
 
@@ -103,9 +104,8 @@ class AuthRepository {
       await firestore.collection('users').doc(uid).set(
         user.toMap(),
       );
-      Navigator.pushNamedAndRemoveUntil(context,
-          MaterialPageRoute(builder: (context) => MobileLayoutScreen(),), (
-              route) => false,);
+      Navigator.pushNamedAndRemoveUntil(
+          context, MobileLayoutScreen.routeName, (route) => false);
     } catch (e) {
       showSnackBar(context: context, content: e.toString());
     }

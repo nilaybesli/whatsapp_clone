@@ -50,8 +50,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
-    return SingleChildScrollView(
-      child: Scaffold(
+    return   Scaffold(
         appBar: AppBar(
           title: const Text("Enter your phone number"),
           elevation: 0,
@@ -103,7 +102,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             ],
           ),
         ),
-      ),
+
     );
   }
 }
