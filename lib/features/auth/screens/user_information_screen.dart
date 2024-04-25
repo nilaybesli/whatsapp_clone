@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_clone/common/utils/utils.dart';
@@ -9,7 +7,7 @@ import 'package:whatsapp_clone/features/auth/controller/auth_controller.dart';
 class UserInformationScreen extends ConsumerStatefulWidget {
   static const String routeName = '/user-information';
 
-  const UserInformationScreen({super.key});
+  const UserInformationScreen({Key? key}) : super(key: key);
 
   @override
   ConsumerState<UserInformationScreen> createState() =>
@@ -31,12 +29,15 @@ class _UserInformationScreenState extends ConsumerState<UserInformationScreen> {
     setState(() {});
   }
 
-  void storeUserData() {
+  void storeUserData() async {
     String name = nameController.text.trim();
+
     if (name.isNotEmpty) {
-      ref
-          .read(authControllerProvider)
-          .saveUserDataToFirebase(context, name, image);
+      ref.read(authControllerProvider).saveUserDataToFirebase(
+            context,
+            name,
+            image,
+          );
     }
   }
 
@@ -45,54 +46,61 @@ class _UserInformationScreenState extends ConsumerState<UserInformationScreen> {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-        body: SafeArea(
-      child: Center(
-        child: Column(
-          children: [
-            Stack(
-              children: [
-                image == null
-                    ? const CircleAvatar(
-                        backgroundImage: NetworkImage(
-                          'https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg',
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            children: [
+              Stack(
+                children: [
+                  image == null
+                      ? const CircleAvatar(
+                          backgroundImage: NetworkImage(
+                            'https://png.pngitem.com/pimgs/s/649-6490124_katie-notopoulos-katienotopoulos-i-write-about-tech-round.png',
+                          ),
+                          radius: 64,
+                        )
+                      : CircleAvatar(
+                          backgroundImage: FileImage(
+                            image!,
+                          ),
+                          radius: 64,
                         ),
-                        radius: 64,
-                      )
-                    : CircleAvatar(
-                        backgroundImage: FileImage(image!),
-                        radius: 64,
+                  Positioned(
+                    bottom: -10,
+                    left: 80,
+                    child: IconButton(
+                      onPressed: selectImage,
+                      icon: const Icon(
+                        Icons.add_a_photo,
                       ),
-                Positioned(
-                  bottom: -10,
-                  left: 80,
-                  child: IconButton(
-                    onPressed: selectImage,
-                    icon: const Icon(Icons.add_a_photo),
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Container(
-                  width: size.width * 0.85,
-                  padding: const EdgeInsets.all(20),
-                  child: TextField(
-                    controller: nameController,
-                    decoration: const InputDecoration(
-                      hintText: 'Enter your name',
                     ),
                   ),
-                ),
-                IconButton(
-                  onPressed: storeUserData,
-                  icon: const Icon(Icons.done),
-                ),
-              ],
-            )
-          ],
+                ],
+              ),
+              Row(
+                children: [
+                  Container(
+                    width: size.width * 0.85,
+                    padding: const EdgeInsets.all(20),
+                    child: TextField(
+                      controller: nameController,
+                      decoration: const InputDecoration(
+                        hintText: 'Enter your name',
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: storeUserData,
+                    icon: const Icon(
+                      Icons.done,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
-    ));
+    );
   }
 }
