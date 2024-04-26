@@ -15,11 +15,10 @@ import 'package:whatsapp_clone/screens/mobile_layout_screen.dart';
 import '../screens/user_information_screen.dart';
 
 final authRepositoryProvider = Provider(
-      (ref) =>
-      AuthRepository(
-        auth: FirebaseAuth.instance,
-        firestore: FirebaseFirestore.instance,
-      ),
+  (ref) => AuthRepository(
+    auth: FirebaseAuth.instance,
+    firestore: FirebaseFirestore.instance,
+  ),
 );
 
 class AuthRepository {
@@ -32,13 +31,15 @@ class AuthRepository {
   });
 
   Future<UserModel?> getCurrentUserData() async {
-    var userData = await firestore.collection('users').doc(auth.currentUser?.uid).get();
+    var userData =
+        await firestore.collection('users').doc(auth.currentUser?.uid).get();
     UserModel? user;
-    if(userData.data() !=null){
-user=UserModel.fromMap(userData.data()!);
+    if (userData.data() != null) {
+      user = UserModel.fromMap(userData.data()!);
     }
     return user;
   }
+
   Future<void> signInWithPhone(BuildContext context, String phoneNumber) async {
     try {
       await auth.verifyPhoneNumber(
@@ -104,18 +105,24 @@ user=UserModel.fromMap(userData.data()!);
         name: name,
         uid: uid,
         profilePic: photoUrl,
-        phoneNumber: auth.currentUser!.uid,
+        phoneNumber: auth.currentUser!.phoneNumber!,
         isOnline: true,
         groupId: [],
       );
 
       await firestore.collection('users').doc(uid).set(
-        user.toMap(),
-      );
+            user.toMap(),
+          );
       Navigator.pushNamedAndRemoveUntil(
           context, MobileLayoutScreen.routeName, (route) => false);
     } catch (e) {
       showSnackBar(context: context, content: e.toString());
     }
+  }
+
+ Stream<UserModel> userData(String userId) {
+    return firestore.collection('users').doc(userId).snapshots().map(
+          (event) => UserModel.fromMap(event.data()!),
+        );
   }
 }
