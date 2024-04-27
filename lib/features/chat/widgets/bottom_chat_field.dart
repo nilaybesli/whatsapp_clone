@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_clone/common/enums/message_enum.dart';
@@ -64,6 +63,15 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
     File? video = await pickVideoFromGallery(context);
     if (video != null) {
       sendFileMessage(video, MessageEnum.video);
+    }
+  }
+
+  void selectGIF() async {
+    final gif = await pickGIF(context);
+    if (gif != null) {
+      ref
+          .read(chatControllerProvider)
+          .sendGIFMessage(context, gif.url, widget.recieverUserId);
     }
   }
 
@@ -132,7 +140,7 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
                             ),
                           ),
                           IconButton(
-                            onPressed: () {},
+                            onPressed: selectGIF,
                             icon: const Icon(
                               Icons.gif,
                               color: Colors.grey,
