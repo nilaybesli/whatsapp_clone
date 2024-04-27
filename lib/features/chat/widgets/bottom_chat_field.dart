@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whatsapp_clone/common/enums/message_enum.dart';
+import 'package:whatsapp_clone/common/utils/utils.dart';
 import 'package:whatsapp_clone/features/chat/controller/chat_controller.dart';
 
 import '../../../colors.dart';
@@ -34,6 +38,22 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
       setState(() {
         _messageController.text = '';
       });
+    }
+  }
+
+  void sendFileMessage(
+    File file,
+    MessageEnum messageEnum,
+  ) {
+    ref
+        .read(chatControllerProvider)
+        .sendFileMessage(context, file, widget.recieverUserId, messageEnum);
+  }
+
+  void selectImage() async {
+    File? image = await pickImageFromGallery(context);
+    if (image != null) {
+      sendFileMessage(image, MessageEnum.image);
     }
   }
 
@@ -83,18 +103,24 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
                   ),
                 ),
               ),
-              suffixIcon: const SizedBox(
+              suffixIcon: SizedBox(
                 width: 100,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Icon(
-                      Icons.camera_alt,
-                      color: Colors.grey,
+                    IconButton(
+                      icon: const Icon(
+                        Icons.camera_alt,
+                        color: Colors.grey,
+                      ),
+                      onPressed: selectImage,
                     ),
-                    Icon(
-                      Icons.attach_file,
-                      color: Colors.grey,
+                    IconButton(
+                      icon: const Icon(
+                        Icons.attach_file,
+                        color: Colors.grey,
+                      ),
+                      onPressed: () {},
                     ),
                   ],
                 ),
