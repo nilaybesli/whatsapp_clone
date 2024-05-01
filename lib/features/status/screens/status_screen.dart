@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:story_view/controller/story_controller.dart';
 import 'package:story_view/story_view.dart';
-import 'package:story_view/widgets/story_view.dart';
 import 'package:whatsapp_clone/common/widgets/loader.dart';
 import 'package:whatsapp_clone/features/status/models/status_model.dart';
 
 class StatusScreen extends StatefulWidget {
   static const String routeName = '/status-screen';
   final Status status;
+
   const StatusScreen({
     Key? key,
     required this.status,
@@ -42,14 +41,14 @@ class _StatusScreenState extends State<StatusScreen> {
       body: storyItems.isEmpty
           ? const Loader()
           : StoryView(
-        storyItems: storyItems,
-        controller: controller,
-        onVerticalSwipeComplete: (direction) {
-          if (direction == Direction.down) {
-            Navigator.pop(context);
-          }
-        },
-      ),
+              storyItems: storyItems,
+              controller: controller,
+              onVerticalSwipeComplete: (direction) {
+                if (direction == Direction.down) {
+                  Navigator.pop(context);
+                }
+              },
+            ),
     );
   }
 }

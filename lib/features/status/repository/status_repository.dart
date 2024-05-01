@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_contacts/contact.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
@@ -14,7 +13,7 @@ import 'package:whatsapp_clone/features/status/models/status_model.dart';
 import 'package:whatsapp_clone/models/user_model.dart';
 
 final statusRepositoryProvider = Provider(
-      (ref) => StatusRepository(
+  (ref) => StatusRepository(
     firestore: FirebaseFirestore.instance,
     auth: FirebaseAuth.instance,
     ref: ref,
@@ -25,6 +24,7 @@ class StatusRepository {
   final FirebaseFirestore firestore;
   final FirebaseAuth auth;
   final ProviderRef ref;
+
   StatusRepository({
     required this.firestore,
     required this.auth,
@@ -44,9 +44,9 @@ class StatusRepository {
       String imageurl = await ref
           .read(commonFirebaseStorageRepositoryProvider)
           .storeFileToFirebase(
-        '/status/$statusId$uid',
-        statusImage,
-      );
+            '/status/$statusId$uid',
+            statusImage,
+          );
       List<Contact> contacts = [];
       if (await FlutterContacts.requestPermission()) {
         contacts = await FlutterContacts.getContacts(withProperties: true);
@@ -57,13 +57,8 @@ class StatusRepository {
       for (int i = 0; i < contacts.length; i++) {
         var userDataFirebase = await firestore
             .collection('users')
-            .where(
-          'phoneNumber',
-          isEqualTo: contacts[i].phones[0].number.replaceAll(
-            ' ',
-            '',
-          ),
-        )
+            .where('phoneNumber',
+                isEqualTo: contacts[i].phones[0].number.trim())
             .get();
 
         if (userDataFirebase.docs.isNotEmpty) {
@@ -76,9 +71,9 @@ class StatusRepository {
       var statusesSnapshot = await firestore
           .collection('status')
           .where(
-        'uid',
-        isEqualTo: auth.currentUser!.uid,
-      )
+            'uid',
+            isEqualTo: auth.currentUser!.uid,
+          )
           .get();
 
       if (statusesSnapshot.docs.isNotEmpty) {
@@ -123,19 +118,14 @@ class StatusRepository {
       for (int i = 0; i < contacts.length; i++) {
         var statusesSnapshot = await firestore
             .collection('status')
+            .where('phoneNumber',
+                isEqualTo: contacts[i].phones[0].number.trim())
             .where(
-          'phoneNumber',
-          isEqualTo: contacts[i].phones[0].number.replaceAll(
-            ' ',
-            '',
-          ),
-        )
-            .where(
-          'createdAt',
-          isGreaterThan: DateTime.now()
-              .subtract(const Duration(hours: 24))
-              .millisecondsSinceEpoch,
-        )
+              'createdAt',
+              isGreaterThan: DateTime.now()
+                  .subtract(const Duration(hours: 24))
+                  .millisecondsSinceEpoch,
+            )
             .get();
         for (var tempData in statusesSnapshot.docs) {
           Status tempStatus = Status.fromMap(tempData.data());

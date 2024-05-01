@@ -103,7 +103,7 @@ class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
         ),
         body: TabBarView(controller: tabBarController, children: const [
           ContactsList(),
-          StatusContacsScreen(),
+          StatusContactsScreen(),
           Text("Calls"),
         ]),
         //const ContactsList(),

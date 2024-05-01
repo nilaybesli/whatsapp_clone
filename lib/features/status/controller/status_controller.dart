@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_clone/features/auth/controller/auth_controller.dart';
@@ -16,6 +17,7 @@ final statusControllerProvider = Provider((ref) {
 class StatusController {
   final StatusRepository statusRepository;
   final ProviderRef ref;
+
   StatusController({
     required this.statusRepository,
     required this.ref,

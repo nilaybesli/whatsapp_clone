@@ -25,7 +25,7 @@ class MobileChatScreen extends ConsumerWidget {
             stream: ref.read(authControllerProvider).userDataById(uid),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Loader();
+                return const Loader();
               }
               return Column(
                 children: [
