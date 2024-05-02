@@ -39,6 +39,7 @@ class ContactsList extends ConsumerWidget {
                                   arguments: {
                                     'name': groupData.name,
                                     'uid': groupData.groupId,
+                                    'isGroupChat': true,
                                   });
                             },
                             child: Padding(
@@ -64,8 +65,7 @@ class ContactsList extends ConsumerWidget {
                                   radius: 30,
                                 ),
                                 trailing: Text(
-                                  DateFormat.Hm()
-                                      .format(groupData.timeSent),
+                                  DateFormat.Hm().format(groupData.timeSent),
                                   style: const TextStyle(
                                     color: Colors.grey,
                                     fontSize: 13,
@@ -100,6 +100,7 @@ class ContactsList extends ConsumerWidget {
                                   arguments: {
                                     'name': chatContactData.name,
                                     'uid': chatContactData.contactId,
+                                    'isGroupChat': false,
                                   });
                             },
                             child: Padding(
