@@ -6,8 +6,9 @@ import 'package:whatsapp_clone/features/auth/screens/login_screen.dart';
 import 'package:whatsapp_clone/features/auth/screens/otp_screen.dart';
 import 'package:whatsapp_clone/features/auth/screens/user_information_screen.dart';
 import 'package:whatsapp_clone/features/chat/screens/mobile_chat_screen.dart';
+import 'package:whatsapp_clone/features/group/screens/create_group_screen.dart';
 import 'package:whatsapp_clone/features/select_contacts/screens/select_contacts_screen.dart';
-import 'package:whatsapp_clone/features/status/models/status_model.dart';
+import 'package:whatsapp_clone/models/status_model.dart';
 import 'package:whatsapp_clone/features/status/screens/confirm_status_screen.dart';
 import 'package:whatsapp_clone/features/status/screens/status_screen.dart';
 import 'package:whatsapp_clone/screens/mobile_layout_screen.dart';
@@ -62,6 +63,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         builder: (ctx) => StatusScreen(
           status: status,
         ),
+      );
+    case CreateGroupScreen.routeName:
+      return MaterialPageRoute(
+        builder: (ctx) => const CreateGroupScreen(),
       );
     default:
       return MaterialPageRoute(
