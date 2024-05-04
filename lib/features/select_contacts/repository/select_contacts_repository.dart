@@ -39,7 +39,10 @@ class SelectContactRepository {
 
       for (var document in userCollection.docs) {
         var userData = UserModel.fromMap(document.data());
-        String selectedPhoneNum = selectedContact.phones[0].number.trim();
+        String selectedPhoneNum = selectedContact.phones[0].number.replaceAll(
+          ' ',
+          '',
+        );
         if (selectedPhoneNum == userData.phoneNumber) {
           isFound = true;
           Navigator.pushNamed(

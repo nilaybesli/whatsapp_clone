@@ -16,6 +16,7 @@ class MobileChatScreen extends ConsumerWidget {
   final String uid;
   final bool isGroupChat;
   final String profilePic;
+
   const MobileChatScreen({
     Key? key,
     required this.name,
@@ -26,12 +27,12 @@ class MobileChatScreen extends ConsumerWidget {
 
   void makeCall(WidgetRef ref, BuildContext context) {
     ref.read(callControllerProvider).makeCall(
-      context,
-      name,
-      uid,
-      profilePic,
-      isGroupChat,
-    );
+          context,
+          name,
+          uid,
+          profilePic,
+          isGroupChat,
+        );
   }
 
   @override
@@ -43,24 +44,24 @@ class MobileChatScreen extends ConsumerWidget {
           title: isGroupChat
               ? Text(name)
               : StreamBuilder<UserModel>(
-              stream: ref.read(authControllerProvider).userDataById(uid),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Loader();
-                }
-                return Column(
-                  children: [
-                    Text(name),
-                    Text(
-                      snapshot.data!.isOnline ? 'online' : 'offline',
-                      style: const TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.normal,
-                      ),
-                    ),
-                  ],
-                );
-              }),
+                  stream: ref.read(authControllerProvider).userDataById(uid),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Loader();
+                    }
+                    return Column(
+                      children: [
+                        Text(name),
+                        Text(
+                          snapshot.data!.isOnline ? 'online' : 'offline',
+                          style: const TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ],
+                    );
+                  }),
           centerTitle: false,
           actions: [
             IconButton(
