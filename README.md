@@ -1,7 +1,7 @@
 # whatsapp_clone
 
  Full Stack Whatsapp Clone with Flutter, Firebase and Riverpod. 
- -This app features phone number authentication, one-to-one & group chatting  to contacts only. It includes sharing text, images, gifs, videos, and audio (with recording), emoji sharing, and caching of images and videos. Additionally, statuses are visible only to contacts and disappear after 24 hours. The app also supports video calling (both one-to-one and group), online/offline status indicators, message seen feature, replying to messages.
+ -This app features phone number authentication, one-to-one & group chatting  to contacts only. It includes sharing text, images, gifs, videos and audio (with recording), emoji sharing, and caching of images and videos. Additionally, statuses are visible only to contacts and disappear after 24 hours. The app also supports video calling, online/offline status, message seen feature, replying to messages.
 
  ![Ekran görüntüsü 2024-05-02 212719](https://github.com/nilaybesli/whatsapp_clone/assets/64665975/2db7bb94-7a62-4a7f-86dc-8ae55c15dd54)
 
